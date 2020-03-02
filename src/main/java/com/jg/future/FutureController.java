@@ -17,6 +17,34 @@ public class FutureController {
 
     public static final long MILLIS = 2000L;
 
+    @GetMapping()
+    public void supplyAsync() throws ExecutionException, InterruptedException {
+        // Start CompletableFuture immediately (runAsync)
+        final CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                    try {
+                        System.out.println("1");
+                        Thread.sleep(500);
+                        System.out.println("2");
+                        Thread.sleep(500);
+                        System.out.println("3");
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+        System.out.println("4");
+        Thread.sleep(500);
+        System.out.println("5");
+        Thread.sleep(500);
+
+        // Wait for CompletableFuture to complete.
+        future.get();
+
+        System.out.println("6");
+        Thread.sleep(500);
+    }
+
     /* SIMPLE FUTURE */
 
     @GetMapping("/simple")
